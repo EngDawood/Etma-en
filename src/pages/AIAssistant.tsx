@@ -20,6 +20,7 @@ export function AIAssistant() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const suggestedPrompts = [
@@ -34,7 +35,7 @@ export function AIAssistant() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
@@ -42,6 +43,7 @@ export function AIAssistant() {
     const userMsg: Message = { id: Date.now().toString(), role: "user", content: text };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setIsTyping(true);
 
     // Simulate AI response based on app state
     setTimeout(() => {
@@ -73,7 +75,8 @@ export function AIAssistant() {
 
       const aiMsg: Message = { id: (Date.now() + 1).toString(), role: "assistant", content: responseContent };
       setMessages((prev) => [...prev, aiMsg]);
-    }, 600);
+      setIsTyping(false);
+    }, 1500);
   };
 
   return (
@@ -119,6 +122,18 @@ export function AIAssistant() {
             </div>
           </div>
         ))}
+        {isTyping && (
+          <div className="flex gap-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[var(--color-primary)] text-white">
+              <Bot className="w-5 h-5" />
+            </div>
+            <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-none p-4 flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+            </div>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -134,7 +149,7 @@ export function AIAssistant() {
           />
           <button
             onClick={() => handleSend(input)}
-            disabled={!input.trim()}
+            disabled={!input.trim() || isTyping}
             className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[var(--color-primary)] text-white rounded-full disabled:opacity-50 disabled:bg-gray-400 transition-colors"
           >
             <Send className="w-4 h-4 ml-0.5" />
