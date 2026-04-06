@@ -46,29 +46,23 @@
 
 ### Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd etmaen
-   ```
-
-2. **Install dependencies:**
+1. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Environment Setup:**
+2. **Environment Setup:**
    Create a `.env` file in the root directory and add your Gemini API key:
    ```env
    GEMINI_API_KEY="your_gemini_api_key_here"
    ```
 
-4. **Run the development server:**
+3. **Run the development server:**
    ```bash
    npm run dev
    ```
 
-5. **Open the app:**
+4. **Open the app:**
    Visit `http://localhost:3000` in your browser.
 
 ---

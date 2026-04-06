@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, QrCode, Pill, MoreVertical, AlertTriangle, Edit2 } from "lucide-react";
+import { Plus, QrCode, Pill, MoreVertical, AlertTriangle, Edit2, X } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppContext } from "../context/AppContext";
 import { PageHeader } from "../components/layout/PageHeader";
@@ -10,7 +10,6 @@ import { Button } from "../components/ui/Button";
 import { Modal } from "../components/ui/Modal";
 import { Medication } from "../types";
 import { INTERACTIONS } from "../data/interactions";
-import { X } from "lucide-react";
 
 export function Medications() {
   const { medications, setMedications } = useAppContext();
@@ -324,6 +323,3 @@ export function Medications() {
     </div>
   );
 }
-
-// Need to import X for scanner
-import { X } from "lucide-react";
