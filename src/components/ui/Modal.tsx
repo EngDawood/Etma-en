@@ -47,7 +47,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             </button>
           </div>
         )}
-        <div className="p-4 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 max-h-[600px] sm:max-h-[500px] overflow-y-auto">
           {children}
         </div>
       </div>

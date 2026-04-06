@@ -80,7 +80,7 @@ export function AIAssistant() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)]">
+    <div className="flex flex-col h-full">
       <PageHeader
         title="AI Assistant"
         subtitle={
