@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Plus, QrCode, Pill, MoreVertical, AlertTriangle, Edit2, X } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppContext } from "../context/AppContext";
@@ -18,6 +18,30 @@ export function Medications() {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [selectedMed, setSelectedMed] = useState<Medication | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    if (isScannerOpen) {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then((mediaStream) => {
+          stream = mediaStream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = mediaStream;
+          }
+        })
+        .catch((err) => {
+          console.error("Camera access error:", err);
+          alert("Could not access the camera. Please check your permissions.");
+        });
+    }
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [isScannerOpen]);
 
   const activeInteractions = useMemo(() => {
     const activeMeds = medications.filter((m) => m.status === "active").map((m) => m.name.toLowerCase());
@@ -108,7 +132,7 @@ export function Medications() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-4 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-4 mt-6">
         <button
           onClick={() => setIsAddModalOpen(true)}
           className="flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 transition-colors gap-2"
@@ -306,15 +330,17 @@ export function Medications() {
               <X className="w-6 h-6" />
             </button>
           </div>
-          <div className="flex-1 relative flex items-center justify-center">
-            <div className="w-64 h-64 border-2 border-white/50 rounded-2xl relative overflow-hidden">
+          <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+            <video ref={videoRef} autoPlay playsInline className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="w-64 h-64 border-2 border-white/50 rounded-2xl relative z-10 overflow-hidden shadow-[0_0_0_9999px_rgba(0,0,0,0.6)]">
               <div className="absolute top-0 left-0 right-0 h-0.5 bg-[var(--color-primary)] shadow-[0_0_8px_var(--color-primary)] animate-[scan_2s_ease-in-out_infinite]"></div>
               <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white"></div>
               <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white"></div>
               <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white"></div>
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white"></div>
             </div>
-            <p className="absolute bottom-24 text-white/80 text-sm text-center px-8">
+            <p className="absolute bottom-24 text-white/80 text-sm text-center px-8 z-10">
               Align medication barcode within the frame
             </p>
           </div>

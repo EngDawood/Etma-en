@@ -67,7 +67,7 @@ export function Home() {
       <DrugInteractionAlert interactions={activeInteractions} />
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3 px-4 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-4 mt-6">
         <Card className="bg-[var(--color-primary-light)] border-none">
           <div className="text-3xl font-bold text-[var(--color-primary)]">{medications.length}</div>
           <div className="text-sm font-medium text-[var(--color-primary)]/80 mt-1">Medications</div>
@@ -124,7 +124,7 @@ export function Home() {
       {/* Quick Actions */}
       <div className="px-4 mt-8">
         <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Link to="/meds" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 transition-transform">
             <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-[var(--color-primary)]">
               <Plus className="w-5 h-5" />

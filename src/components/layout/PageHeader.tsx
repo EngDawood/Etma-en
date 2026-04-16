@@ -9,7 +9,7 @@ interface PageHeaderProps {
 export function PageHeader({ title, rightElement, subtitle }: PageHeaderProps) {
   return (
     <header className="sticky top-0 z-40 bg-[var(--color-bg)]/80 backdrop-blur-md pt-safe pb-4 px-4 border-b border-gray-200/50">
-      <div className="max-w-[430px] mx-auto pt-4">
+      <div className="w-full max-w-[430px] md:max-w-none mx-auto pt-4 md:pt-6 transition-all duration-300">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">{title}</h1>
           {rightElement && <div>{rightElement}</div>}

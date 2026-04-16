@@ -34,12 +34,22 @@ export function Records() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
+    let sizeStr = "1.5 MB";
+    const file = formData.get("file") as File | null;
+    if (file && file.size) {
+      if (file.size < 1024 * 1024) {
+        sizeStr = (file.size / 1024).toFixed(1) + " KB";
+      } else {
+        sizeStr = (file.size / (1024 * 1024)).toFixed(1) + " MB";
+      }
+    }
+
     const newRecord: MedicalRecord = {
       id: uuidv4(),
       name: formData.get("name") as string,
       category: formData.get("category") as MedicalRecord["category"],
       uploadDate: new Date().toISOString().split("T")[0],
-      size: "1.5 MB", // Simulated
+      size: sizeStr,
       notes: formData.get("notes") as string,
     };
 
@@ -158,6 +168,10 @@ export function Records() {
       {/* Upload Modal */}
       <Modal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} title="Upload Record">
         <form onSubmit={handleUpload} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">File</label>
+            <input required type="file" name="file" className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-primary-light)] file:text-[var(--color-primary)] hover:file:bg-teal-50" />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">File Name</label>
             <input required name="name" type="text" className="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--color-primary)] outline-none" placeholder="e.g., Blood Test Results" />
