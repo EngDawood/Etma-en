@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { User, Shield, Clock, Trash2, Plus, Info } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppContext } from "../context/AppContext";
@@ -44,121 +44,125 @@ export function Profile() {
     <div className="pb-6">
       <PageHeader title="Profile" />
 
-      {/* User Card */}
-      <div className="px-4 mt-6">
-        <Card className="flex items-center gap-4 p-5 bg-gradient-to-br from-[var(--color-primary)] to-teal-800 border-none">
-          <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold border-2 border-white/30">
-            {userProfile.initials}
+      <div className="px-4 md:px-8 mt-6 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-start">
+        <div className="space-y-8">
+          {/* User Card */}
+          <div>
+            <Card className="flex items-center gap-4 p-5 bg-gradient-to-br from-[var(--color-primary)] to-teal-800 border-none">
+              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold border-2 border-white/30">
+                {userProfile.initials}
+              </div>
+              <div className="text-white">
+                <h2 className="text-xl font-bold">{userProfile.name}</h2>
+                <p className="text-white/80 text-sm mt-0.5">{userProfile.email}</p>
+              </div>
+            </Card>
           </div>
-          <div className="text-white">
-            <h2 className="text-xl font-bold">{userProfile.name}</h2>
-            <p className="text-white/80 text-sm mt-0.5">{userProfile.email}</p>
-          </div>
-        </Card>
-      </div>
 
-      {/* Doctor Access Management */}
-      <div className="px-4 mt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-[var(--color-text-primary)] flex items-center gap-2">
-            <Shield className="w-5 h-5 text-[var(--color-primary)]" />
-            Doctor Access
-          </h3>
-          <Button size="sm" variant="outline" onClick={() => setIsGrantModalOpen(true)}>
-            <Plus className="w-4 h-4 mr-1" /> Grant
-          </Button>
+          {/* About Section */}
+          <div className="mb-4">
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)] flex items-center gap-2 mb-4">
+              <Info className="w-5 h-5 text-[var(--color-primary)]" />
+              About App
+            </h3>
+            <Card className="bg-gray-50 border-none space-y-4">
+              <div className="flex justify-between items-center border-b border-gray-200 pb-3">
+                <span className="text-gray-500 text-sm">App Name</span>
+                <div className="flex items-center gap-2">
+                  <img src="/logo.png" alt="Logo" className="w-5 h-5 object-contain" />
+                  <span className="font-semibold text-[var(--color-primary)]">Etma'en</span>
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-200 pb-3">
+                <span className="text-gray-500 text-sm">Version</span>
+                <span className="font-medium">1.0.0</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-200 pb-3">
+                <span className="text-gray-500 text-sm">Course</span>
+                <span className="font-medium text-sm text-right">SE411 · Sec 1383<br/>Software Construction</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-200 pb-3">
+                <span className="text-gray-500 text-sm">Academic Year</span>
+                <span className="font-medium text-sm">2025–2026</span>
+              </div>
+              <div>
+                <span className="text-gray-500 text-sm block mb-2">Team Members</span>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center bg-white p-2 rounded-lg border border-gray-100">
+                    <span className="font-medium text-sm">Mira Kasem</span>
+                    <span className="text-xs text-gray-500 font-mono">222411027</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-white p-2 rounded-lg border border-gray-100">
+                    <span className="font-medium text-sm">Leen Hashem</span>
+                    <span className="text-xs text-gray-500 font-mono">222410967</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
 
-        <div className="space-y-3">
-          {doctorAccess.map((grant) => {
-            const isExpired = new Date(grant.expiresAt) < new Date();
-            const isActive = grant.status === "active" && !isExpired;
+        {/* Doctor Access Management */}
+        <div className="mt-8 lg:mt-0">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)] flex items-center gap-2">
+              <Shield className="w-5 h-5 text-[var(--color-primary)]" />
+              Doctor Access
+            </h3>
+            <Button size="sm" variant="outline" onClick={() => setIsGrantModalOpen(true)}>
+              <Plus className="w-4 h-4 mr-1" /> Grant
+            </Button>
+          </div>
 
-            return (
-              <Card key={grant.id} className="p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">{grant.doctorName}</h4>
-                    <p className="text-sm text-[var(--color-text-secondary)]">{grant.specialty}</p>
-                  </div>
-                  {isActive ? (
-                    <Badge variant="success">Active</Badge>
-                  ) : grant.status === "revoked" ? (
-                    <Badge variant="danger">Revoked</Badge>
-                  ) : (
-                    <Badge variant="neutral">Expired</Badge>
-                  )}
-                </div>
-                
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <Clock className="w-3.5 h-3.5" />
+          <div className="space-y-3">
+            {doctorAccess.map((grant) => {
+              const isExpired = new Date(grant.expiresAt) < new Date();
+              const isActive = grant.status === "active" && !isExpired;
+
+              return (
+                <Card key={grant.id} className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-semibold text-[var(--color-text-primary)]">{grant.doctorName}</h4>
+                      <p className="text-sm text-[var(--color-text-secondary)]">{grant.specialty}</p>
+                    </div>
                     {isActive ? (
-                      <span>Expires in {formatDistanceToNow(new Date(grant.expiresAt))}</span>
+                      <Badge variant="success">Active</Badge>
+                    ) : grant.status === "revoked" ? (
+                      <Badge variant="danger">Revoked</Badge>
                     ) : (
-                      <span>Expired {format(new Date(grant.expiresAt), "MMM d, yyyy")}</span>
+                      <Badge variant="neutral">Expired</Badge>
                     )}
                   </div>
-                  {isActive && (
-                    <button
-                      onClick={() => handleRevoke(grant.id)}
-                      className="text-xs font-medium text-[var(--color-danger)] hover:bg-[var(--color-danger-light)] px-2 py-1 rounded transition-colors"
-                    >
-                      Revoke
-                    </button>
-                  )}
-                </div>
-              </Card>
-            );
-          })}
-          {doctorAccess.length === 0 && (
-            <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-              No active access grants.
-            </div>
-          )}
+                  
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                      <Clock className="w-3.5 h-3.5" />
+                      {isActive ? (
+                        <span>Expires in {formatDistanceToNow(new Date(grant.expiresAt))}</span>
+                      ) : (
+                        <span>Expired {format(new Date(grant.expiresAt), "MMM d, yyyy")}</span>
+                      )}
+                    </div>
+                    {isActive && (
+                      <button
+                        onClick={() => handleRevoke(grant.id)}
+                        className="text-xs font-medium text-[var(--color-danger)] hover:bg-[var(--color-danger-light)] px-2 py-1 rounded transition-colors"
+                      >
+                        Revoke
+                      </button>
+                    )}
+                  </div>
+                </Card>
+              );
+            })}
+            {doctorAccess.length === 0 && (
+              <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                No active access grants.
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-
-      {/* About Section */}
-      <div className="px-4 mt-8 mb-4">
-        <h3 className="text-lg font-bold text-[var(--color-text-primary)] flex items-center gap-2 mb-4">
-          <Info className="w-5 h-5 text-[var(--color-primary)]" />
-          About App
-        </h3>
-        <Card className="bg-gray-50 border-none space-y-4">
-          <div className="flex justify-between items-center border-b border-gray-200 pb-3">
-            <span className="text-gray-500 text-sm">App Name</span>
-            <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Logo" className="w-5 h-5 object-contain" />
-              <span className="font-semibold text-[var(--color-primary)]">Etma'en</span>
-            </div>
-          </div>
-          <div className="flex justify-between items-center border-b border-gray-200 pb-3">
-            <span className="text-gray-500 text-sm">Version</span>
-            <span className="font-medium">1.0.0</span>
-          </div>
-          <div className="flex justify-between items-center border-b border-gray-200 pb-3">
-            <span className="text-gray-500 text-sm">Course</span>
-            <span className="font-medium text-sm text-right">SE411 · Sec 1383<br/>Software Construction</span>
-          </div>
-          <div className="flex justify-between items-center border-b border-gray-200 pb-3">
-            <span className="text-gray-500 text-sm">Academic Year</span>
-            <span className="font-medium text-sm">2025–2026</span>
-          </div>
-          <div>
-            <span className="text-gray-500 text-sm block mb-2">Team Members</span>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center bg-white p-2 rounded-lg border border-gray-100">
-                <span className="font-medium text-sm">Mira Kasem</span>
-                <span className="text-xs text-gray-500 font-mono">222411027</span>
-              </div>
-              <div className="flex justify-between items-center bg-white p-2 rounded-lg border border-gray-100">
-                <span className="font-medium text-sm">Leen Hashem</span>
-                <span className="text-xs text-gray-500 font-mono">222410967</span>
-              </div>
-            </div>
-          </div>
-        </Card>
       </div>
 
       {/* Grant Access Modal */}

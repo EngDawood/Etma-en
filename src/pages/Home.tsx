@@ -55,8 +55,8 @@ export function Home() {
         }
       />
 
-      <div className="px-4 mt-6">
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+      <div className="px-4 md:px-8 mt-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)]">
           Good morning, {userProfile.name.split(" ")[0]}
         </h2>
         <p className="text-[var(--color-text-secondary)] mt-1">
@@ -64,10 +64,12 @@ export function Home() {
         </p>
       </div>
 
-      <DrugInteractionAlert interactions={activeInteractions} />
+      <div className="px-4 md:px-8">
+        <DrugInteractionAlert interactions={activeInteractions} />
+      </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3 px-4 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 px-4 md:px-8 mt-6">
         <Card className="bg-[var(--color-primary-light)] border-none">
           <div className="text-3xl font-bold text-[var(--color-primary)]">{medications.length}</div>
           <div className="text-sm font-medium text-[var(--color-primary)]/80 mt-1">Medications</div>
@@ -100,55 +102,57 @@ export function Home() {
         </Card>
       </div>
 
-      {/* Today's Schedule */}
-      <div className="px-4 mt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Today's Schedule</h3>
-          <Link to="/meds" className="text-sm font-medium text-[var(--color-primary)]">View all</Link>
+      <div className="lg:grid lg:grid-cols-2 lg:gap-8 px-4 md:px-8 mt-8">
+        {/* Today's Schedule */}
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Today's Schedule</h3>
+            <Link to="/meds" className="text-sm font-medium text-[var(--color-primary)]">View all</Link>
+          </div>
+          <div className="space-y-3">
+            {todayMeds.slice(0, 3).map((med, idx) => (
+              <Card key={med.id} className="flex items-center gap-4 p-3">
+                <button className="text-gray-300 hover:text-[var(--color-success)] transition-colors">
+                  {idx === 0 ? <CheckCircle2 className="w-6 h-6 text-[var(--color-success)]" /> : <Circle className="w-6 h-6" />}
+                </button>
+                <div className="flex-1">
+                  <div className="font-semibold text-[var(--color-text-primary)]">{med.name}</div>
+                  <div className="text-sm text-[var(--color-text-secondary)]">{med.dosage} · {med.timing.join(", ")}</div>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
-        <div className="space-y-3">
-          {todayMeds.slice(0, 3).map((med, idx) => (
-            <Card key={med.id} className="flex items-center gap-4 p-3">
-              <button className="text-gray-300 hover:text-[var(--color-success)] transition-colors">
-                {idx === 0 ? <CheckCircle2 className="w-6 h-6 text-[var(--color-success)]" /> : <Circle className="w-6 h-6" />}
-              </button>
-              <div className="flex-1">
-                <div className="font-semibold text-[var(--color-text-primary)]">{med.name}</div>
-                <div className="text-sm text-[var(--color-text-secondary)]">{med.dosage} · {med.timing.join(", ")}</div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
 
-      {/* Quick Actions */}
-      <div className="px-4 mt-8">
-        <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 gap-3">
-          <Link to="/meds" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 transition-transform">
-            <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-[var(--color-primary)]">
-              <Plus className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-medium text-gray-700">Add Med</span>
-          </Link>
-          <Link to="/records" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 transition-transform">
-            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-              <Upload className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-medium text-gray-700">Upload File</span>
-          </Link>
-          <Link to="/profile" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 transition-transform">
-            <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
-              <Shield className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-medium text-gray-700">Doctor Access</span>
-          </Link>
-          <Link to="/ai" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 transition-transform">
-            <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
-              <Bot className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-medium text-gray-700">Ask AI</span>
-          </Link>
+        {/* Quick Actions */}
+        <div className="mt-8 lg:mt-0">
+          <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Quick Actions</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+            <Link to="/meds" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 hover:shadow-md transition-all">
+              <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-[var(--color-primary)]">
+                <Plus className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Add Med</span>
+            </Link>
+            <Link to="/records" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 hover:shadow-md transition-all">
+              <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                <Upload className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Upload File</span>
+            </Link>
+            <Link to="/profile" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 hover:shadow-md transition-all">
+              <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                <Shield className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Doctor Access</span>
+            </Link>
+            <Link to="/ai" className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-200 gap-2 active:scale-95 hover:shadow-md transition-all">
+              <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+                <Bot className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Ask AI</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

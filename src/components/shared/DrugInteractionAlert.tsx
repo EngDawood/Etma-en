@@ -18,7 +18,7 @@ export function DrugInteractionAlert({ interactions }: DrugInteractionAlertProps
     <>
       <div
         onClick={() => setSelectedInteraction(interactions[0])}
-        className="mx-4 mt-4 bg-[var(--color-danger-light)] border border-[var(--color-danger)]/20 rounded-xl p-3 flex items-start gap-3 cursor-pointer active:scale-[0.98] transition-transform"
+        className="mt-4 bg-[var(--color-danger-light)] border border-[var(--color-danger)]/20 rounded-xl p-3 flex items-start gap-3 cursor-pointer active:scale-[0.98] transition-transform"
       >
         <AlertTriangle className="w-5 h-5 text-[var(--color-danger)] shrink-0 mt-0.5" />
         <div className="flex-1">

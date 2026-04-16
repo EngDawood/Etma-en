@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Upload, FileText, Image as ImageIcon, FileSpreadsheet, ShieldCheck, MoreVertical, Edit2 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppContext } from "../context/AppContext";
@@ -90,7 +90,7 @@ export function Records() {
         }
       />
 
-      <div className="px-4 mt-6">
+      <div className="px-4 md:px-8 mt-6">
         <button
           onClick={() => setIsUploadModalOpen(true)}
           className="w-full flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 transition-colors gap-3"
@@ -105,8 +105,8 @@ export function Records() {
         </button>
       </div>
 
-      <div className="mt-6">
-        <div className="flex overflow-x-auto hide-scrollbar px-4 pb-2 gap-2">
+      <div className="mt-6 px-4 md:px-8">
+        <div className="flex overflow-x-auto hide-scrollbar pb-2 gap-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -123,31 +123,33 @@ export function Records() {
         </div>
       </div>
 
-      <div className="px-4 mt-4 space-y-3">
-        {filteredRecords.map((record) => (
-          <Card key={record.id} className="flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-              record.category === 'lab' ? 'bg-blue-50 text-blue-600' :
-              record.category === 'imaging' ? 'bg-purple-50 text-purple-600' :
-              record.category === 'report' ? 'bg-green-50 text-green-600' :
-              'bg-orange-50 text-orange-600'
-            }`}>
-              {getFileIcon(record.category)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-[var(--color-text-primary)] truncate">{record.name}</h3>
-              <div className="flex items-center gap-2 mt-1">
-                <Badge variant={record.category as any} className="uppercase text-[10px] tracking-wider">
-                  {record.category}
-                </Badge>
-                <span className="text-xs text-gray-500">{record.uploadDate}</span>
+      <div className="px-4 md:px-8 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filteredRecords.map((record) => (
+            <Card key={record.id} className="flex items-center gap-4 hover:shadow-md transition-shadow">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                record.category === 'lab' ? 'bg-blue-50 text-blue-600' :
+                record.category === 'imaging' ? 'bg-purple-50 text-purple-600' :
+                record.category === 'report' ? 'bg-green-50 text-green-600' :
+                'bg-orange-50 text-orange-600'
+              }`}>
+                {getFileIcon(record.category)}
               </div>
-            </div>
-            <Button size="sm" variant="outline" onClick={() => setSelectedRecord(record)}>
-              View
-            </Button>
-          </Card>
-        ))}
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-[var(--color-text-primary)] truncate">{record.name}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <Badge variant={record.category as any} className="uppercase text-[10px] tracking-wider">
+                    {record.category}
+                  </Badge>
+                  <span className="text-xs text-gray-500">{record.uploadDate}</span>
+                </div>
+              </div>
+              <Button size="sm" variant="outline" onClick={() => setSelectedRecord(record)}>
+                View
+              </Button>
+            </Card>
+          ))}
+        </div>
         {filteredRecords.length === 0 && (
           <div className="text-center py-10 text-gray-500">
             No records found in this category.

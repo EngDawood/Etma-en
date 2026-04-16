@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { Plus, QrCode, Pill, MoreVertical, AlertTriangle, Edit2 } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { Plus, QrCode, Pill, MoreVertical, AlertTriangle, Edit2, X } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppContext } from "../context/AppContext";
 import { PageHeader } from "../components/layout/PageHeader";
@@ -10,7 +10,6 @@ import { Button } from "../components/ui/Button";
 import { Modal } from "../components/ui/Modal";
 import { Medication } from "../types";
 import { INTERACTIONS } from "../data/interactions";
-import { X } from "lucide-react";
 
 export function Medications() {
   const { medications, setMedications } = useAppContext();
@@ -101,7 +100,7 @@ export function Medications() {
         }
       />
 
-      <div className="px-4 mt-4">
+      <div className="px-4 md:px-8 mt-4">
         <SearchBar
           placeholder="Search by name or ingredient..."
           value={searchQuery}
@@ -109,7 +108,7 @@ export function Medications() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-4 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 px-4 md:px-8 mt-6">
         <button
           onClick={() => setIsAddModalOpen(true)}
           className="flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 transition-colors gap-2"
@@ -126,43 +125,45 @@ export function Medications() {
         </button>
       </div>
 
-      <div className="px-4 mt-6 space-y-3">
-        {filteredMeds.map((med) => {
-          const hasInteraction = activeInteractions.some(
-            (i) => i.drug1 === med.name.toLowerCase() || i.drug2 === med.name.toLowerCase()
-          );
+      <div className="px-4 md:px-8 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filteredMeds.map((med) => {
+            const hasInteraction = activeInteractions.some(
+              (i) => i.drug1 === med.name.toLowerCase() || i.drug2 === med.name.toLowerCase()
+            );
 
-          return (
-            <Card key={med.id} onClick={() => setSelectedMed(med)} className="flex items-start gap-4">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                  hasInteraction ? "bg-[var(--color-danger-light)] text-[var(--color-danger)]" : "bg-teal-50 text-[var(--color-primary)]"
-                }`}
-              >
-                <Pill className="w-5 h-5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-semibold text-[var(--color-text-primary)] truncate">{med.name}</h3>
-                  {hasInteraction ? (
-                    <Badge variant="danger" className="shrink-0 flex items-center gap-1">
-                      <AlertTriangle className="w-3 h-3" /> Interaction
-                    </Badge>
-                  ) : (
-                    <Badge variant="success" className="shrink-0">
-                      Active
-                    </Badge>
-                  )}
+            return (
+              <Card key={med.id} onClick={() => setSelectedMed(med)} className="flex items-start gap-4 cursor-pointer hover:shadow-md transition-shadow">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    hasInteraction ? "bg-[var(--color-danger-light)] text-[var(--color-danger)]" : "bg-teal-50 text-[var(--color-primary)]"
+                  }`}
+                >
+                  <Pill className="w-5 h-5" />
                 </div>
-                <div className="text-sm text-[var(--color-text-secondary)] mt-0.5">{med.dosage}</div>
-                <div className="text-xs text-gray-500 mt-2 flex items-center justify-between">
-                  <span>{med.prescriber || "No prescriber"}</span>
-                  <span className="capitalize">{med.timing.join(" & ")}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-semibold text-[var(--color-text-primary)] truncate">{med.name}</h3>
+                    {hasInteraction ? (
+                      <Badge variant="danger" className="shrink-0 flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3" /> Interaction
+                      </Badge>
+                    ) : (
+                      <Badge variant="success" className="shrink-0">
+                        Active
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="text-sm text-[var(--color-text-secondary)] mt-0.5">{med.dosage}</div>
+                  <div className="text-xs text-gray-500 mt-2 flex items-center justify-between">
+                    <span>{med.prescriber || "No prescriber"}</span>
+                    <span className="capitalize">{med.timing.join(" & ")}</span>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
+        </div>
       </div>
 
       {/* Add Medication Modal */}
@@ -325,5 +326,4 @@ export function Medications() {
   );
 }
 
-// Need to import X for scanner
-import { X } from "lucide-react";
+// Removed duplicate X import

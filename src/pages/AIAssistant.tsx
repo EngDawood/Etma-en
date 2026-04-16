@@ -91,7 +91,7 @@ export function AIAssistant() {
         }
       />
 
-      <div className="px-4 py-3 border-b border-gray-100 bg-white">
+      <div className="px-4 md:px-8 py-3 border-b border-gray-100 bg-white">
         <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
           {suggestedPrompts.map((prompt, idx) => (
             <button
@@ -105,7 +105,7 @@ export function AIAssistant() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 md:px-8 space-y-4">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
@@ -113,7 +113,7 @@ export function AIAssistant() {
             }`}>
               {msg.role === "assistant" ? <Bot className="w-5 h-5" /> : <User className="w-5 h-5" />}
             </div>
-            <div className={`max-w-[80%] rounded-2xl p-3 text-sm ${
+            <div className={`max-w-[80%] md:max-w-[60%] rounded-2xl p-3 text-sm ${
               msg.role === "assistant" 
                 ? "bg-white border border-gray-200 text-[var(--color-text-primary)] rounded-tl-none" 
                 : "bg-[var(--color-primary)] text-white rounded-tr-none"
@@ -137,8 +137,8 @@ export function AIAssistant() {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 bg-white border-t border-gray-200">
-        <div className="relative">
+      <div className="p-4 md:px-8 bg-white border-t border-gray-200">
+        <div className="relative max-w-3xl mx-auto">
           <input
             type="text"
             value={input}
